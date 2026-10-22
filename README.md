@@ -11,10 +11,10 @@ npm ci
 npm run dev
 ```
 
-기본 개발 포트는 5173입니다. 프로덕션 파일은 `npm run build`로 `dist/`에 만들고, `npm run preview`로 내부 확인할 수 있습니다. 정적 호스팅에서도 실행됩니다. 브라우저에 WCL 인증 정보가 필요하지 않습니다.
+기본 개발 포트는 5173입니다. 실행 중 `npm ci`로 의존성을 재설치했다면 기존 Vite 서버를 재시작하세요. 오래된 최적화 캐시의 504 오류를 방지합니다. 프로덕션 파일은 `npm run build`로 `dist/`에 만들고, `npm run preview`로 내부 확인할 수 있습니다. 정적 호스팅에서도 실행됩니다. 브라우저에 WCL 인증 정보가 필요하지 않습니다.
 
 ```sh
-npm test                 # 순수 엔진 테스트 13개
+npm test                 # 순수 엔진 테스트 14개
 npm run build           # TypeScript 검사 + 프로덕션 번들
 npm run test:browser     # Chromium에서 실제 화면·조작·전체 전투 검증
 ```
@@ -68,6 +68,7 @@ python3 tools/extract_wcl.py --refresh
 - `src/engine.ts`: 순수 코어, 배정·AI 목표·이동·충돌·기믹·상태 복원
 - `src/scenario.ts`: 출처와 신뢰도가 있는 타임라인 및 검증
 - `src/input.ts`: 입력·바인딩·마우스 카메라 상태
+- `public/THREE-LICENSE.txt`: 배포에 포함되는 Three.js MIT 라이선스
 - `src/view.ts`: Three.js 전장·도형·위험 표시·3인칭 카메라
 - `src/main.ts`, `src/style.css`: HUD·설정·저장·분석·재생 루프
 - `tools/extract_wcl.py`: 서버/개발 전용 WCL 추출
