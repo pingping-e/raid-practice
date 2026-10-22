@@ -1,11 +1,11 @@
 export type Mechanic = 'Mutilate' | 'Ravage' | 'Tempest' | 'Fury' | 'Surge' | 'Crosswinds' | 'DigIn';
 export type Confidence = 'handoff-observed' | 'log-observed' | 'reconstructed';
-export interface TimelineEvent { id: string; at: number; duration: number; kind: Mechanic; confidence: Confidence; source: string; }
+export interface TimelineEvent { id: string; at: number; duration: number; kind: Mechanic; confidence: Confidence; durationConfidence?: Confidence; source: string; }
 export interface Scenario { version: 1; duration: number; title: string; source: string; events: TimelineEvent[]; }
 const source = 'https://www.warcraftlogs.com/reports/A8yxaWCNdrb1wmLh?fight=24&view=replay';
 const events: TimelineEvent[] = [];
 function add(kind: Mechanic, at: number, duration: number, confidence: Confidence = 'reconstructed') {
-  events.push({ id: `${kind}-${at}`, kind, at, duration, confidence, source: confidence === 'reconstructed' ? '연습용 재구성: docs/ACCURACY.md' : source });
+  events.push({ id: `${kind}-${at}`, kind, at, duration, confidence, durationConfidence:at<25?confidence:'reconstructed', source: confidence === 'reconstructed' ? '연습용 재구성: docs/ACCURACY.md' : source });
 }
 add('Mutilate',5.007,3.007,'handoff-observed'); add('Mutilate',9.007,3.02,'handoff-observed');
 add('Tempest',12.995,3.499,'handoff-observed'); add('Ravage',17.494,3.02,'handoff-observed'); add('Ravage',21.492,3.005,'handoff-observed');
@@ -25,7 +25,7 @@ export function validateScenario(s: unknown): asserts s is Scenario {
   if (typeof v.source !== 'string' || !/^https:\/\//.test(v.source)) throw Error('HTTPS 출처가 필요합니다.');
   const ids = new Set<string>(); let previous = -1;
   for (const e of v.events) {
-    if (!e || typeof e.id !== 'string' || ids.has(e.id) || !Object.hasOwn(names,e.kind) || !Number.isFinite(e.at) || e.at < previous || e.at < 0 || !Number.isFinite(e.duration) || e.duration < 0 || e.duration > 60 || e.at+e.duration > v.duration || !['handoff-observed','log-observed','reconstructed'].includes(e.confidence) || typeof e.source !== 'string' || e.source.length > 1000) throw Error('잘못된 이벤트: 시간순·기믹·출처를 확인하세요.');
+    if (!e || typeof e.id !== 'string' || ids.has(e.id) || !Object.hasOwn(names,e.kind) || !Number.isFinite(e.at) || e.at < previous || e.at < 0 || !Number.isFinite(e.duration) || e.duration < 0 || e.duration > 60 || e.at+e.duration > v.duration || !['handoff-observed','log-observed','reconstructed'].includes(e.confidence) || (e.durationConfidence!==undefined&&!['handoff-observed','log-observed','reconstructed'].includes(e.durationConfidence)) || typeof e.source !== 'string' || e.source.length > 1000) throw Error('잘못된 이벤트: 시간순·기믹·출처를 확인하세요.');
     ids.add(e.id); previous=e.at;
   }
 }
