@@ -8,8 +8,17 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "tsx --test tests/*.test.ts",
-    "wcl:extract": "python3 tools/extract_wcl.py"
+    "wcl:extract": "python3 tools/extract_wcl.py",
+    "test:browser": "playwright test"
   },
-  "dependencies": { "three": "0.170.0" },
-  "devDependencies": { "@types/three": "0.170.0", "typescript": "5.9.3", "vite": "7.3.1", "tsx": "4.21.0", "@playwright/test": "1.58.2" }
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@types/three": "0.170.0",
+    "typescript": "5.9.3",
+    "vite": "7.3.1",
+    "tsx": "4.21.0",
+    "@playwright/test": "1.58.2"
+  }
 }
